@@ -1,6 +1,5 @@
 <html lang="pt-br">
 
-
 <link rel="shortcut icon" href="img\filmando.png" type="image/x-icon">
 
 <head>
@@ -51,8 +50,13 @@
             <h1 class="logo">VioletView</h1>
         </div>
 
-        
-        
+         <div class="w3-container" style="display: flex; align-items: center;">
+            <form id="searchForm" style="display: flex; width: 100%;" onsubmit="handleSearch(event)">
+                <input type="text" name="query" placeholder="Pesquisar filmes..." style="width: 80%; padding: 10px; border: none; border-radius: 4px 0 0 4px;" required>
+                <button type="submit" style="padding: 10px; border: none; background-color: #ff6347; color: white; border-radius: 0 4px 4px 0;">Pesquisar</button>
+            </form>            
+            </div>
+
         <div class="w3-container" style="display: flex">
             <ul id="search-results" class="cards-list"></ul>
             <div class="profile-container">

@@ -1,3 +1,89 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get('query');
+  const resultsContainer = document.getElementById('results');
+
+  if (query) {
+    fetchMovies(query);
+  }
+
+  function fetchMovies(query) {
+    const omdbApiKey = '2d83b506';
+    fetch(`http://www.omdbapi.com/?s=${query}&apikey=${omdbApiKey}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.Response === 'True') {
+          displayResults(data.Search);
+        } else {
+          resultsContainer.textContent = 'Nenhum filme encontrado.';
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao buscar filmes:', error);
+        resultsContainer.textContent = 'Erro ao buscar filmes. Por favor, tente novamente mais tarde.';
+      });
+  }
+
+  function displayResults(movies) {
+    resultsContainer.innerHTML = '';
+
+    if (movies && movies.length > 0) {
+      let row = document.createElement('div');
+      row.classList.add('movie-row');
+      movies.forEach((movie, index) => {
+        if (index > 0 && index % 5 === 0) {
+          resultsContainer.appendChild(row);
+          row = document.createElement('div');
+          row.classList.add('movie-row');
+        }
+        const movieElement = createMovieElement(movie);
+        row.appendChild(movieElement);
+      });
+      resultsContainer.appendChild(row); // Adiciona a última linha
+    } else {
+      resultsContainer.textContent = 'Nenhum filme encontrado.';
+    }
+  }
+
+  function createMovieElement(movie) {
+    const movieElement = document.createElement('div');
+    movieElement.classList.add('movie-container');
+    movieElement.innerHTML = `
+      <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'img/no-image.png'}" alt="${movie.Title} Poster">
+      <div class="movie-details">
+        <h2>${movie.Title}</h2>
+        <p><strong style="color: #E61D00;">Lançamento:</strong> ${movie.Year}</p>
+        <p><strong style="color: #E61D00;">Tipo:</strong> ${movie.Type}</p>
+        <button onclick="showMovieDetails('${movie.imdbID}')">Ver Detalhes</button>
+      </div>
+    `;
+    return movieElement;
+  }
+
+  window.showMovieDetails = async function (imdbID) {
+    try {
+      const response = await fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=2d83b506`);
+      const movieData = await response.json();
+
+      alert(`Detalhes de ${movieData.Title}:
+          Lançamento: ${movieData.Released}
+          Gênero: ${movieData.Genre}
+          Enredo: ${movieData.Plot}
+          Duração: ${movieData.Runtime}
+      `);
+    } catch (error) {
+      console.error('Erro ao obter detalhes do filme:', error);
+    }
+  };
+});
+
+function handleSearch(event) {
+  event.preventDefault();
+  const query = document.querySelector('input[name="query"]').value;
+  window.location.href = `pesquisa.html?query=${query}`;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const arrows = document.querySelectorAll(".arrow");
 const movieLists = document.querySelectorAll(".movie-list");
 
