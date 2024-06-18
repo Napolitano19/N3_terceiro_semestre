@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados da Pesquisa - VioletView</title>
+  <link rel="stylesheet" type="text/css" href="styles/index-style.css">
+  <style>
+    /* Estilos CSS para exibir os filmes em grade */
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .movie-item {
+      text-align: center;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .movie-item img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .movie-details {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .movie-details h2 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    .movie-details p {
+      margin: 5px 0;
+    }
+
+    .movie-details button {
+      padding: 8px 16px;
+      background-color: #ff6347;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .movie-details button:hover {
+      background-color: #e74c3c;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .pagination button {
+      margin: 0 5px;
+      padding: 8px 16px;
+      background-color: #ff6347;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .pagination button:hover {
+      background-color: #e74c3c;
+    }
+
+    .pagination .active {
+      background-color: #e74c3c;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="main">
+    <div id="barra" class="" style="display: flex; align-items: center; background-color: #151515;">
+      <button id="openNav" class=" my-custom-button" onclick="w3_open()">&#9776;</button>
+      <img src="img/filmando.png" class="icon-nav-bar" alt="">
+      <div class="logo-container">
+        <h1 class="logo">VioletView</h1>
+      </div>
+      <div class="w3-container" style="display: flex; align-items: center;">
+        <form onsubmit="handleSearch(event)" style="display: flex; width: 100%;">
+          <input type="text" name="query" placeholder="Pesquisar filmes..." style="width: 80%; padding: 10px; border: none; border-radius: 4px 0 0 4px;">
+          <button type="submit" style="padding: 10px; border: none; background-color: #ff6347; color: white; border-radius: 0 4px 4px 0;">Pesquisar</button>
+        </form>
+      </div>
+      <div class="w3-container" style="display: flex">
+        <ul id="search-results" class="cards-list"></ul>
+        <div class="profile-container">
+          <a href="#" class="display-picture"><img src="img/profile.jpg" alt=""></a>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="content-container">
+        <h1>Resultados da Pesquisa</h1>
+        <div id="results" class="movie-grid"></div>
+      </div>
+    </div>
+    <div id="pagination" class="pagination"></div>
+  </div>
+  <script src="appA.js"></script>
+</body>
+
+</html>
