@@ -204,8 +204,7 @@ app.put('/usuario/:id', async (req, res) => {
         console.error('Erro no servidor:', err);
         return res.status(500).json({ mensagem: 'Erro interno no servidor', error: err.message });
     }
-});
-          
+})
 app.listen(port, () => {
     console.log('Servidor está rodando na porta ' + port)
 })
