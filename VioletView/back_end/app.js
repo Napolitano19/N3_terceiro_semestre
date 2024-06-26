@@ -1,50 +1,18 @@
-const sql = require('mssql')
 const express = require('express')
-const path = require('path')
 var cors = require('cors')
 
 const app = express()
-const port = 3000; // porta padrão
 app.use(express.json())
 app.use(cors())
 
-// // Configurando o middleware para servir arquivos estáticos da pasta 'img'
-// app.use(express.static(path.join(__dirname, 'img')));
-
-const config = {
-    server: 'KawanGabriel',
-    database: 'violetview',
-    port: 1433,
-    user: 'sa',
-    password: 'Acabana2009*',
-    trustServerCertificate: true,
-    options: {
-        cryptoCredentialsDetails: {
-            minVersion: 'TLSv1',
-            trustServerCertificate: true,
-        },
-    },
-}
-
-sql.connect(config)
-    .then((conn) => {
-        console.log('conectou')
-        global.conn = conn
-    })
-    .catch((err) => {
-        console.log(err)
-    });
-
-    function execSQLQuery(sqlQry, res){
-        global.conn.request()
-                    .query(sqlQry)
-                    .then(result => res.json(result.recordset)) // EM caso de sucesso
-                    .catch(err => res.json(err)) // em caso de erro
-    }
-
 // Endpoint para login
 app.get('/login', (req, res) => {
-    const { email, senha } = req.query; // Modificado para usar req.query
+    const { email, senha } = req.query;
+
+    // Verificar se email e senha foram fornecidos
+    if (!email || !senha) {
+        return res.status(400).json({ mensagem: 'Email e senha são obrigatórios para login.' });
+    }
 
     const query = `SELECT id, nome, email, dat_nascimento, senha FROM cadastro WHERE email='${email}' AND senha='${senha}'`;
 
@@ -62,9 +30,10 @@ app.get('/login', (req, res) => {
             }
         })
         .catch((err) => {
-            res.status(500).json({ mensagem: 'Erro interno no servidor', error: err.message })
+            res.status(500).json({ mensagem: 'Erro interno no servidor', error: err.message });
         });
 });
+
 
 app.get('/filmes', async (req, res) => {
     const { nome } = req.query;
@@ -90,45 +59,54 @@ app.get('/filmes', async (req, res) => {
     }
 });
 
-
 // Endpoint para cadastro
-app.post('/cadastro', (req, res) => {
+app.post('/cadastro', async (req, res) => {
     const { nome, senha, dat_nascimento, email } = req.body;
 
-    if (!nome || !senha || !dat_nascimento || !email) {
-        return res.status(400).json({ mensagem: 'Nome, senha, data de nascimento e email são campos obrigatórios.' });
+    try {
+        // Verificar se todos os campos obrigatórios estão presentes
+        if (!nome || !senha || !dat_nascimento || !email) {
+            return res.status(400).json({ mensagem: 'Nome, senha, data de nascimento e email são campos obrigatórios.' });
+        }
+
+        // Calcular idade do usuário
+        const currentDate = new Date();
+        const birthDate = new Date(dat_nascimento);
+        const idade = currentDate.getFullYear() - birthDate.getFullYear();
+
+        // Verificar se a idade é menor que 18 anos
+        if (idade < 18) {
+            return res.status(400).json({ mensagem: 'Erro: O cliente deve ter no mínimo 18 anos.' });
+        }
+
+        // Verificar se o email já está cadastrado
+        const checkEmailQuery = `SELECT 1 FROM cadastro WHERE email=@email`;
+        const result = await global.conn.request()
+            .input('email', email)
+            .query(checkEmailQuery);
+
+        if (result.recordset.length > 0) {
+            return res.status(400).json({ mensagem: 'Erro: O email já está cadastrado.' });
+        }
+
+        // Inserir usuário no banco de dados
+        const insertQuery = `
+            INSERT INTO cadastro (nome, senha, dat_nascimento, email)
+            VALUES (@nome, @senha, @dat_nascimento, @email)
+        `;
+        await global.conn.request()
+            .input('nome', nome)
+            .input('senha', senha)
+            .input('dat_nascimento', dat_nascimento)
+            .input('email', email)
+            .query(insertQuery);
+
+        // Retornar sucesso
+        res.status(200).json({ mensagem: 'Cliente registrado com sucesso.' });
+    } catch (error) {
+        res.status(500).json({ mensagem: 'Erro interno no servidor', error: error.message });
     }
-
-    const checkEmailQuery = `SELECT 1 FROM cadastro WHERE email='${email}'`;
-
-    global.conn.request()
-        .query(checkEmailQuery)
-        .then((result) => {
-            if (result.recordset.length > 0) {
-                return res.status(400).json({ mensagem: 'Erro: O email já está cadastrado.' });
-            }
-
-            const currentDate = new Date();
-            const idade = currentDate.getFullYear() - new Date(dat_nascimento).getFullYear();
-
-            if (idade < 18) {
-                return res.status(400).json({ mensagem: 'Erro: O cliente deve ter no mínimo 18 anos.' });
-            }
-
-            // Se o email não estiver cadastrado, realiza a inserção no banco de dados
-            const insertQuery = `
-                INSERT INTO cadastro (nome, senha, dat_nascimento, email)
-                VALUES ('${nome}', '${senha}', '${dat_nascimento}', '${email}')
-            `;
-
-            global.conn.request()
-                .query(insertQuery)
-                .then(() => res.status(200).json({ mensagem: 'Cliente registrado com sucesso.' }))
-                .catch((err) => res.status(500).json({ mensagem: 'Erro interno no servidor', error: err.message }));
-        })
-        .catch((err) => res.status(500).json({ mensagem: 'Erro interno no servidor', error: err.message }));
 });
-
 
 // Requisito 4 - Excluir cadastro por ID
 app.delete('/usuario/:id', async (req, res) => {
@@ -165,9 +143,6 @@ app.put('/usuario/:id', async (req, res) => {
     try {
         const pool = await global.conn;
 
-        // Convertendo a data para o formato aceito pelo banco de dados
-        const formattedDate = new Date(dat_nascimento).toISOString();
-
         // Construir a parte SET da consulta com base nos campos fornecidos
         const updateFields = [];
         if (nome) updateFields.push(`nome = @nome`);
@@ -180,32 +155,37 @@ app.put('/usuario/:id', async (req, res) => {
             return res.status(200).json({ mensagem: 'Nenhum dado foi alterado.' });
         }
 
+        const updateQuery = `
+            UPDATE cadastro
+            SET ${updateFields.join(', ')}
+            WHERE id = @id
+        `;
+
         const updateResult = await pool
-        .request()
-        .input('id', id)
-        .input('nome', nome)
-        .input('senha', senha)
-        .input('dat_nascimento', formattedDate) // Utilizando a data formatada
-        .input('email', email)
-        .query(`
-        UPDATE cadastro
-        SET nome = @nome, senha = @senha, dat_nascimento = @dat_nascimento, email = @email
-        WHERE id = @id
-    `);
+            .request()
+            .input('id', id)
+           .input('nome', nome)  
+            .input('senha', senha)
+            .input('dat_nascimento', dat_nascimento )
+            .input('email', email)
+            .query(updateQuery);
 
         if (updateResult.rowsAffected[0] > 0) {
-            // Alterado com sucesso
-            return res.status(204).end(); // ou res.status(200).json({ mensagem: 'Usuário atualizado com sucesso.' });
+            return res.status(204).end();
         } else {
-            // Nenhum dado foi alterado
             return res.status(200).json({ mensagem: 'Nenhum dado foi alterado.' });
         }
     } catch (err) {
-        console.error('Erro no servidor:', err);
         return res.status(500).json({ mensagem: 'Erro interno no servidor', error: err.message });
     }
+<<<<<<< HEAD
 });
+
           
+module.exports = app
+=======
+})
 app.listen(port, () => {
     console.log('Servidor está rodando na porta ' + port)
 })
+>>>>>>> 6f9de09782386434b12d573707707560c5e7c9d7
