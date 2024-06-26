@@ -1,19 +1,35 @@
-name: Continuos Integration
+# name: Continuos Integration
 
-on: pull_request
+# on: pull_request
   
-jobs:
-  continuous-integration:
+# jobs:
+#   continuous-integration:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Using Node.js
+#       uses: actions/setup-node@v1
+#       with:
+#         node-version: 16.
+#       - name: run install, build and test
+#         run: |
+#         npm install 
+#         npm run build 
+#         npm run test
+
+name: Teste
+
+on:
+  push:
+    branches: [testeworkflow]
+    
+  workflow_dispath:
+  
+jobs: 
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Using Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16.
-      - name: run install, build and test
-        run: |
-        npm install 
-        npm run build 
-        npm run test
+    - name: Print a message
+      run: echo "Hello, World!"
