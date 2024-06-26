@@ -178,7 +178,14 @@ app.put('/usuario/:id', async (req, res) => {
     } catch (err) {
         return res.status(500).json({ mensagem: 'Erro interno no servidor', error: err.message });
     }
+<<<<<<< HEAD
 });
 
           
 module.exports = app
+=======
+})
+app.listen(port, () => {
+    console.log('Servidor está rodando na porta ' + port)
+})
+>>>>>>> 6f9de09782386434b12d573707707560c5e7c9d7

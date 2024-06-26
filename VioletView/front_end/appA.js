@@ -294,7 +294,7 @@ function cadastrarUsuario() {
 // logout
 function confirmarLogout() {
   var resposta = confirm("Você deseja realmente sair?")
-  if (resposta) window.location.href = "novo.html"
+  if (resposta) window.location.href = "login_cadastro.html"
 }
 
 // side bar
@@ -438,7 +438,7 @@ function confirmarExclusao() {
           .then(data => {
             console.log(data.mensagem); // Mensagem de sucesso do servidor
             alert('Sua conta foi excluída com sucesso!')
-            window.location.href = "novo.html"
+            window.location.href = "login_cadastro.html"
             // Aqui você pode redirecionar o usuário para a página de login, por exemplo
           })
           .catch(error => {
