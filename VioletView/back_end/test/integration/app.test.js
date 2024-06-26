@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app'); // Importa a aplicação Express
+const app = require('../../app'); // Importa a aplicação Express
 
 describe('Testando os endpoints', () => {
     beforeEach(() => {
