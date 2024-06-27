@@ -1,0 +1,15 @@
+name: Teste
+
+on:
+  push:
+    branches: [main]
+    
+  workflow_dispath:
+  
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Print a message
+      run: echo "Hello, World!"
