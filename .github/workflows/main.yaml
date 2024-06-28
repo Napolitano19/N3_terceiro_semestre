@@ -22,12 +22,8 @@ jobs:
 
       # Instalação de dependências para back_end
       - name: Instalar dependências para back_end
-        run: |
-          cd back_end
-          npm install
+        run: npm install
 
       # Execução dos testes de unidade e cobertura para back_end
       - name: Executar testes de unidade e cobertura para back_end
-        run: |
-          cd back_end
-          npm test
+        run: npm test
