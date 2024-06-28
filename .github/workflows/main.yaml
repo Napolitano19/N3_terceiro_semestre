@@ -11,24 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v2
         with:
-          node-version: '20' 
+          node-version: '20'
 
       - name: Install dependencies
         working-directory: back_end
         run: npm install
 
-      - name: Grant execute permissions for Jest
-        working-directory: back_end
-        run: chmod +x ./node_modules/.bin/jest
-
       - name: Run tests with Jest
         working-directory: back_end
         run: npm test
-        env:
-          CI: true
