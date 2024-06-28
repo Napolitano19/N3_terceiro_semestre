@@ -17,11 +17,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'  # Certifique-se de que esta é a versão do Node.js que você precisa
+          node-version: '20' 
 
       - name: Install dependencies
         working-directory: back_end
         run: npm install
+
+      - name: Grant execute permissions for Jest
+        working-directory: back_end
+        run: chmod +x ./node_modules/.bin/jest
 
       - name: Run tests with Jest
         working-directory: back_end
