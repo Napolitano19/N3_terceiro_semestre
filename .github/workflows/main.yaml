@@ -2,15 +2,15 @@ name: Node.js CI
 
 on:
   push:
-    branches: 
+    branches:
       - testeworkflow
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-     steps:
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -18,7 +18,7 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '20' 
 
       # Instalação de dependências para back_end
       - name: Instalar dependências para back_end
