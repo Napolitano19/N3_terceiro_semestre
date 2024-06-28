@@ -25,13 +25,7 @@ jobs:
           npm install
           npm install jest --save-dev
           npm install jest supertest --save-dev
-          npm install mssql --save-dev
-
-      # Instalação de dependências para front_end
-      - name: Instalar dependências para front_end
-        run: |
-          cd front_end
-          npm install
+          npm install mssql --save-devgtg
 
       # Execução dos testes para back_end
       - name: Executar Jest para back_end
