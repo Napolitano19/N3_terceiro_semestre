@@ -19,10 +19,14 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Instalar ESLint localmente
+        run: npm install eslint
+
+      - name: Garantir permissões de execução para ESLint
+        run: chmod +x ./node_modules/.bin/eslint
+
       - name: Executar ESLint
-        working-directory: back_end
         run: |
-          npm install eslint
           ./node_modules/.bin/eslint *.js tests/**/*.js
 
       - name: Instalar dependências
