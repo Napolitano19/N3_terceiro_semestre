@@ -27,8 +27,8 @@ jobs:
           npm install supertest --save-dev
           npm install mssql --save-dev
 
-      # Execução dos testes para back_end
-      - name: Executar Jest para back_end
+      # Execução dos testes de unidade e cobertura para back_end
+      - name: Executar testes de unidade e cobertura para back_end
         run: |
           cd back_end
-          npm test
+          npm test -- --coverage
