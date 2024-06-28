@@ -26,6 +26,7 @@ jobs:
         run: chmod +x ./node_modules/.bin/eslint
 
       - name: Executar ESLint
+        working-directory: back_end
         run: |
           ./node_modules/.bin/eslint *.js tests/**/*.js
 
