@@ -1,15 +1,40 @@
-name: Teste
+name: Node.js CI
 
 on:
   push:
     branches: [testeworkflow]
-    
-  workflow_dispatch:
 
-jobs: 
+jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Print a message
-      run: echo "Hello, World!"
+      # Verifica e obtém seu repositório sob $GITHUB_WORKSPACE, para que seu job possa acessá-lo
+      - uses: actions/checkout@v4
+
+      # Configuração do Node.js
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      # Instalação de dependências para back_end
+      - name: Instalar dependências para back_end
+        run: |
+          cd back_end
+          npm install
+          npm install jest --save-dev
+          npm install jest supertest --save-dev
+          npm install mssql --save-dev
+
+      # Instalação de dependências para front_end
+      - name: Instalar dependências para front_end
+        run: |
+          cd front_end
+          npm install
+
+      # Execução dos testes para back_end
+      - name: Executar Jest para back_end
+        run: |
+          cd back_end
+          npm test
