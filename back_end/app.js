@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const sql = require('mssql'); // Certifique-se de ter o pacote mssql instalado
-
 const app = express();
-const port = 3000; // Defina a porta aqui
+
 
 app.use(express.json());
 app.use(cors());
@@ -173,10 +172,4 @@ app.put('/usuario/:id', async (req, res) => {
 
 
 module.exports = app;
-
-/*app.listen(port, () => {
-    console.log('Servidor está rodando na porta ' + port);
-});*/
-
-
 

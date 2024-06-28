@@ -11,6 +11,8 @@ describe('Testando os endpoints', () => {
         };
     });
 
+    
+
     test('Deve fazer login com sucesso', async () => {
         const mockUser = {
             id: 1,
