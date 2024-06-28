@@ -25,5 +25,9 @@ jobs:
         run: |
           cd back_end
           npm install 
-          npm test -- test
+
+      # Executar testes com Jest
+      - name: Executar testes com Jest
+        working-directory: back_end
+        run: npm test
          
