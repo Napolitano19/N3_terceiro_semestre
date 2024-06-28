@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1719543033242" clover="3.2.0">
-  <project timestamp="1719543033242" name="All files">
+<coverage generated="1719543870167" clover="3.2.0">
+  <project timestamp="1719543870167" name="All files">
     <metrics statements="74" coveredstatements="74" conditionals="32" coveredconditionals="32" methods="7" coveredmethods="7" elements="113" coveredelements="113" complexity="0" loc="74" ncloc="74" packages="1" files="1" classes="1"/>
     <file name="app.js" path="C:\Users\falca\OneDrive\Área de Trabalho\Git\N3_terceiro_semestre_workflow\back_end\app.js">
       <metrics statements="74" coveredstatements="74" conditionals="32" coveredconditionals="32" methods="7" coveredmethods="7"/>
