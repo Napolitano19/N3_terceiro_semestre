@@ -1,6 +1,6 @@
 const request = require('supertest');
 const sql = require('mssql');
-const app = require('../../app');
+const app = require('../app');
 
 // Mock da conexão com o banco de dados
 jest.mock('mssql');
