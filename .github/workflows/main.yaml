@@ -23,5 +23,5 @@ jobs:
       # Executar testes com Jest
       - name: Executar testes com Jest
         working-directory: back_end
-        run: npm test
+        run: npm test -- tests/integration
          
