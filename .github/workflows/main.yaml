@@ -23,10 +23,6 @@ jobs:
         working-directory: back_end
         run: npm install
 
-      - name: Grant execute permissions for Jest
-        working-directory: back_end
-        run: chmod +x ./node_modules/.bin/jest
-
       - name: Run tests with Jest
         working-directory: back_end
         run: npm test
