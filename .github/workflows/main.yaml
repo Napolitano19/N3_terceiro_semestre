@@ -18,13 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Substitua pela versão correta do Node.js
-
-      # Instalação de dependências para back_end
-      - name: Instalar dependências para back_end
-        run: |
-          cd back_end
-          npm install 
+          node-version: '20'  # Substitua pela versão correta do Node.js
 
       # Executar testes com Jest
       - name: Executar testes com Jest
