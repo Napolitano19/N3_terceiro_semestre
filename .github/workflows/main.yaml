@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js CI/CD
 
 on:
   push:
@@ -11,20 +11,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Verificar código
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v2
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      - name: Executar ESLint
+        working-directory: back_end
+        run: |
+          npm install eslint
+          npm run lint
+
+      - name: Instalar dependências
         working-directory: back_end
         run: npm install
 
-      - name: Grant execute permissions for Jest
+      - name: Conceder permissões de execução para o Jest
         working-directory: back_end
         run: chmod +x ./node_modules/.bin/jest
 
-      - name: Run tests with Jest
+      - name: Executar testes com Jest
         working-directory: back_end
         run: npm test
+
+      - name: Upload do relatório de cobertura
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: back_end/coverage
+
