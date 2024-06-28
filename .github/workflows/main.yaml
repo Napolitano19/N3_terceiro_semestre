@@ -24,16 +24,6 @@ jobs:
       - name: Instalar dependências para back_end
         run: |
           cd back_end
-          npm install
-
-      # Executar server.js (ajuste o comando conforme necessário)
-      - name: Executar server.js
-        run: |
-          cd back_end 
-          node server.js
-
-      # Execução dos testes de unidade e cobertura para back_end
-      - name: Executar testes de unidade e cobertura para back_end
-        run: |
-          cd back_end 
+          npm install 
           npm test -- test
+         
