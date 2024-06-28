@@ -28,6 +28,6 @@ jobs:
 
       # Execução dos testes de unidade e cobertura para back_end
       - name: Executar testes de unidade e cobertura para back_end
-        run:|
+        run: |
           cd back_end 
           npm test -- test
