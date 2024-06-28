@@ -23,7 +23,7 @@ jobs:
         working-directory: back_end
         run: |
           npm install eslint
-          npm run lint
+          ./node_modules/.bin/eslint *.js tests/**/*.js
 
       - name: Instalar dependências
         working-directory: back_end
@@ -43,4 +43,3 @@ jobs:
         with:
           name: coverage-report
           path: back_end/coverage
-
