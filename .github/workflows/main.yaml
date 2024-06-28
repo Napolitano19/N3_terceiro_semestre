@@ -27,8 +27,8 @@ jobs:
 
       - name: Executar ESLint
         working-directory: back_end
-        run: |
-          ./node_modules/.bin/eslint *.js tests/**/*.js
+        run: npm run lint
+          
 
       - name: Instalar dependências
         working-directory: back_end
