@@ -29,6 +29,6 @@ jobs:
 
       - name: Run tests with Jest
         working-directory: back_end
-        run: npm test -- tests/integration
+        run: npm test
         env:
           CI: true
